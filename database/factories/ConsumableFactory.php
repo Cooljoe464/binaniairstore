@@ -29,10 +29,17 @@ class ConsumableFactory extends Factory
      */
     public function definition(): array
     {
+        $receivedQuantity = $this->faker->numberBetween(1, 100);
+
         return [
             'part_number' => $this->faker->ean8(),
             'description' => $this->faker->sentence(),
-            'quantity_received' => $this->faker->numberBetween(1, 100),
+            'received_quantity' => $receivedQuantity,
+            'accepted_quantity' => $receivedQuantity,
+            'binned_quantity' => $receivedQuantity,
+            'ak_reg' => $this->faker->bothify('??-###'),
+            'remark' => $this->faker->sentence(),
+            'store_officer_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'aircraft_id' => Aircraft::factory(),
             'due_date' => $this->faker->date(),
             'received_by_id' => User::factory(),

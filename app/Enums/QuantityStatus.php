@@ -7,9 +7,14 @@ enum QuantityStatus: string
     case LOW = 'low';
     case MEDIUM = 'medium';
     case GOOD = 'good';
+    case NONE = 'none';
 
-    public static function fromQuantity(int $quantity): self
+    public static function fromQuantity(?int $quantity): self
     {
+        if (is_null($quantity)) {
+            return self::NONE;
+        }
+
         if ($quantity <= self::lowThreshold()) {
             return self::LOW;
         } elseif ($quantity <= self::mediumThreshold()) {
@@ -24,6 +29,7 @@ enum QuantityStatus: string
             self::LOW => 'bg-red-100 text-red-800',
             self::MEDIUM => 'bg-yellow-100 text-yellow-800',
             self::GOOD => 'bg-green-100 text-green-800',
+            self::NONE => 'bg-gray-100 text-gray-800',
         };
     }
 

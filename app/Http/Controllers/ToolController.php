@@ -29,7 +29,8 @@ class ToolController extends Controller
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
         $users = User::all();
-        return view('tools.create', compact('suppliers', 'locations', 'users'));
+        $storeOfficers = User::role('Store-Manager')->get();
+        return view('tools.create', compact('suppliers', 'locations', 'users', 'storeOfficers'));
     }
 
     public function store(Request $request)
@@ -38,7 +39,12 @@ class ToolController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'quantity_received' => 'required|integer',
+            'received_quantity' => 'required|integer',
+            'accepted_quantity' => 'required|integer',
+            'binned_quantity' => 'required|integer',
+            'ak_reg' => 'required|string',
+            'remark' => 'nullable|string',
+            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'calibration_date' => 'required|date',
             'due_date' => 'required|date',
@@ -60,7 +66,8 @@ class ToolController extends Controller
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
         $users = User::all();
-        return view('tools.edit', compact('tool', 'suppliers', 'locations', 'users'));
+        $storeOfficers = User::role('Store-Manager')->get();
+        return view('tools.edit', compact('tool', 'suppliers', 'locations', 'users', 'storeOfficers'));
     }
 
     public function update(Request $request, Tool $tool)
@@ -69,7 +76,12 @@ class ToolController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'quantity_received' => 'required|integer',
+            'received_quantity' => 'required|integer',
+            'accepted_quantity' => 'required|integer',
+            'binned_quantity' => 'required|integer',
+            'ak_reg' => 'required|string',
+            'remark' => 'nullable|string',
+            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'calibration_date' => 'required|date',
             'due_date' => 'required|date',

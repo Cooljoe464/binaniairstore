@@ -21,7 +21,12 @@
                 <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Part Number</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">R.Qty</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">A.Qty</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">B.Qty</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AK Reg</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remark</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Store Officer</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Airway Bill</th>
@@ -38,11 +43,12 @@
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $dope->part_number }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ Str::limit($dope->description, 20) }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dope->quantity_received)->getColorClass() }}">
-                                {{ $dope->quantity_received }}
-                            </span>
-                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dope->received_quantity)->getColorClass() }}">{{ $dope->received_quantity }}</span></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dope->accepted_quantity)->getColorClass() }}">{{ $dope->accepted_quantity }}</span></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dope->binned_quantity)->getColorClass() }}">{{ $dope->binned_quantity }}</span></td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $dope->ak_reg }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ Str::limit($dope->remark, 15) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $dope->storeOfficer->name ?? 'N/A' }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                 @switch($dope->status)
@@ -100,11 +106,12 @@
                     </div>
                     <div class="mt-2 text-sm text-gray-600">
                         <div><strong>Description:</strong> {{ Str::limit($dope->description, 30) }}</div>
-                        <div><strong>Quantity:</strong>
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dope->quantity_received)->getColorClass() }}">
-                                {{ $dope->quantity_received }}
-                            </span>
-                        </div>
+                        <div><strong>Received Qty:</strong> <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dope->received_quantity)->getColorClass() }}">{{ $dope->received_quantity }}</span></div>
+                        <div><strong>Accepted Qty:</strong> <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dope->accepted_quantity)->getColorClass() }}">{{ $dope->accepted_quantity }}</span></div>
+                        <div><strong>Binned Qty:</strong> <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dope->binned_quantity)->getColorClass() }}">{{ $dope->binned_quantity }}</span></div>
+                        <div><strong>AK Reg:</strong> {{ $dope->ak_reg }}</div>
+                        <div><strong>Remark:</strong> {{ Str::limit($dope->remark, 30) }}</div>
+                        <div><strong>Store Officer:</strong> {{ $dope->storeOfficer->name ?? 'N/A' }}</div>
                         <div><strong>Supplier:</strong> {{ $dope->supplier->name }}</div>
                         <div><strong>Airway Bill:</strong> {{ $dope->airway_bill }}</div>
                         <div><strong>Location:</strong> {{ $dope->location->name }}</div>

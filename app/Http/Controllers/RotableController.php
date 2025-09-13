@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Rotable;
 use App\Models\Supplier;
 use App\Models\ShelfLocation;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-/**
- * @method middleware(string $string, array[] $array)
- */
 class RotableController extends Controller
 {
     public function __construct()
@@ -30,7 +28,8 @@ class RotableController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        return view('rotables.create', compact('suppliers', 'locations'));
+        $storeOfficers = User::role('Store-Manager')->get();
+        return view('rotables.create', compact('suppliers', 'locations', 'storeOfficers'));
     }
 
     public function store(Request $request)
@@ -39,7 +38,12 @@ class RotableController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'quantity_received' => 'required|integer',
+            'received_quantity' => 'required|integer',
+            'accepted_quantity' => 'required|integer',
+            'binned_quantity' => 'required|integer',
+            'ak_reg' => 'required|string',
+            'remark' => 'nullable|string',
+            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -58,7 +62,8 @@ class RotableController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        return view('rotables.edit', compact('rotable', 'suppliers', 'locations'));
+        $storeOfficers = User::role('Store-Manager')->get();
+        return view('rotables.edit', compact('rotable', 'suppliers', 'locations', 'storeOfficers'));
     }
 
     public function update(Request $request, Rotable $rotable)
@@ -67,7 +72,12 @@ class RotableController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'quantity_received' => 'required|integer',
+            'received_quantity' => 'required|integer',
+            'accepted_quantity' => 'required|integer',
+            'binned_quantity' => 'required|integer',
+            'ak_reg' => 'required|string',
+            'remark' => 'nullable|string',
+            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',

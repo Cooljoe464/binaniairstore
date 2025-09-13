@@ -31,7 +31,8 @@ class ConsumableController extends Controller
         $users = User::all();
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        return view('consumables.create', compact('aircrafts', 'users', 'suppliers', 'locations'));
+        $storeOfficers = User::role('Store-Manager')->get();
+        return view('consumables.create', compact('aircrafts', 'users', 'suppliers', 'locations', 'storeOfficers'));
     }
 
     public function store(Request $request)
@@ -39,7 +40,12 @@ class ConsumableController extends Controller
         $request->validate([
             'part_number' => 'required|string',
             'description' => 'nullable|string',
-            'quantity_received' => 'required|integer',
+            'received_quantity' => 'required|integer',
+            'accepted_quantity' => 'required|integer',
+            'binned_quantity' => 'required|integer',
+            'ak_reg' => 'required|string',
+            'remark' => 'nullable|string',
+            'store_officer_id' => 'required|exists:users,id',
             'aircraft_id' => 'required|exists:aircrafts,id',
             'due_date' => 'required|date',
             'received_by_id' => 'required|exists:users,id',
@@ -62,7 +68,8 @@ class ConsumableController extends Controller
         $users = User::all();
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        return view('consumables.edit', compact('consumable', 'aircrafts', 'users', 'suppliers', 'locations'));
+        $storeOfficers = User::role('Store-Manager')->get();
+        return view('consumables.edit', compact('consumable', 'aircrafts', 'users', 'suppliers', 'locations', 'storeOfficers'));
     }
 
     public function update(Request $request, Consumable $consumable)
@@ -70,7 +77,12 @@ class ConsumableController extends Controller
         $request->validate([
             'part_number' => 'required|string',
             'description' => 'nullable|string',
-            'quantity_received' => 'required|integer',
+            'received_quantity' => 'required|integer',
+            'accepted_quantity' => 'required|integer',
+            'binned_quantity' => 'required|integer',
+            'ak_reg' => 'required|string',
+            'remark' => 'nullable|string',
+            'store_officer_id' => 'required|exists:users,id',
             'aircraft_id' => 'required|exists:aircrafts,id',
             'due_date' => 'required|date',
             'received_by_id' => 'required|exists:users,id',

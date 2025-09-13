@@ -28,11 +28,18 @@ class ToolFactory extends Factory
      */
     public function definition(): array
     {
+        $receivedQuantity = $this->faker->numberBetween(1, 100);
+
         return [
             'part_number' => $this->faker->ean8(),
             'description' => $this->faker->sentence(),
             'serial_number' => $this->faker->ean13(),
-            'quantity_received' => $this->faker->numberBetween(1, 100),
+            'received_quantity' => $receivedQuantity,
+            'accepted_quantity' => $receivedQuantity,
+            'binned_quantity' => $receivedQuantity,
+            'ak_reg' => $this->faker->bothify('??-###'),
+            'remark' => $this->faker->sentence(),
+            'store_officer_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'status' => $this->faker->randomElement(Status::cases()),
             'calibration_date' => $this->faker->date(),
             'due_date' => $this->faker->date(),

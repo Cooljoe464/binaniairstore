@@ -29,7 +29,8 @@ class TyreController extends Controller
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
         $users = User::all();
-        return view('tyres.create', compact('suppliers', 'locations', 'users'));
+        $storeOfficers = User::role('Store-Manager')->get();
+        return view('tyres.create', compact('suppliers', 'locations', 'users', 'storeOfficers'));
     }
 
     public function store(Request $request)
@@ -38,7 +39,12 @@ class TyreController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'quantity_received' => 'required|integer',
+            'received_quantity' => 'required|integer',
+            'accepted_quantity' => 'required|integer',
+            'binned_quantity' => 'required|integer',
+            'ak_reg' => 'required|string',
+            'remark' => 'nullable|string',
+            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -59,7 +65,8 @@ class TyreController extends Controller
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
         $users = User::all();
-        return view('tyres.edit', compact('tyre', 'suppliers', 'locations', 'users'));
+        $storeOfficers = User::role('Store-Manager')->get();
+        return view('tyres.edit', compact('tyre', 'suppliers', 'locations', 'users', 'storeOfficers'));
     }
 
     public function update(Request $request, Tyre $tyre)
@@ -68,7 +75,12 @@ class TyreController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'quantity_received' => 'required|integer',
+            'received_quantity' => 'required|integer',
+            'accepted_quantity' => 'required|integer',
+            'binned_quantity' => 'required|integer',
+            'ak_reg' => 'required|string',
+            'remark' => 'nullable|string',
+            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',

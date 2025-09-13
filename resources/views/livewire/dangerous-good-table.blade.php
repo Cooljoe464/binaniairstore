@@ -22,7 +22,12 @@
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Part Number</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Serial Number</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">R.Qty</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">A.Qty</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">B.Qty</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AK Reg</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remark</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Store Officer</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Airway Bill</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
@@ -49,11 +54,12 @@
                         <td class="px-6 py-4 whitespace-nowrap">{{ $dangerousGood->part_number }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ Str::limit($dangerousGood->description, 20) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $dangerousGood->serial_number }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dangerousGood->quantity_received)->getColorClass() }}">
-                                {{ $dangerousGood->quantity_received }}
-                            </span>
-                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dangerousGood->received_quantity)->getColorClass() }}">{{ $dangerousGood->received_quantity }}</span></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dangerousGood->accepted_quantity)->getColorClass() }}">{{ $dangerousGood->accepted_quantity }}</span></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dangerousGood->binned_quantity)->getColorClass() }}">{{ $dangerousGood->binned_quantity }}</span></td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $dangerousGood->ak_reg }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ Str::limit($dangerousGood->remark, 15) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $dangerousGood->storeOfficer->name ?? 'N/A' }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                 @switch($dangerousGood->status)
@@ -125,11 +131,12 @@
                     <div class="mt-2 text-sm text-gray-600">
                         <div><strong>Description:</strong> {{ Str::limit($dangerousGood->description, 30) }}</div>
                         <div><strong>Serial Number:</strong> {{ $dangerousGood->serial_number }}</div>
-                        <div><strong>Quantity:</strong>
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dangerousGood->quantity_received)->getColorClass() }}">
-                                {{ $dangerousGood->quantity_received }}
-                            </span>
-                        </div>
+                        <div><strong>Received Qty:</strong> <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dangerousGood->received_quantity)->getColorClass() }}">{{ $dangerousGood->received_quantity }}</span></div>
+                        <div><strong>Accepted Qty:</strong> <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dangerousGood->accepted_quantity)->getColorClass() }}">{{ $dangerousGood->accepted_quantity }}</span></div>
+                        <div><strong>Binned Qty:</strong> <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ App\Enums\QuantityStatus::fromQuantity($dangerousGood->binned_quantity)->getColorClass() }}">{{ $dangerousGood->binned_quantity }}</span></div>
+                        <div><strong>AK Reg:</strong> {{ $dangerousGood->ak_reg }}</div>
+                        <div><strong>Remark:</strong> {{ Str::limit($dangerousGood->remark, 30) }}</div>
+                        <div><strong>Store Officer:</strong> {{ $dangerousGood->storeOfficer->name ?? 'N/A' }}</div>
                         <div><strong>Airway Bill:</strong> {{ $dangerousGood->airway_bill }}</div>
                         <div><strong>Supplier:</strong> {{ $dangerousGood->supplier->name }}</div>
                         <div><strong>Location:</strong> {{ $dangerousGood->location->name }}</div>

@@ -29,7 +29,8 @@ class DopeController extends Controller
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
         $users = User::all();
-        return view('dopes.create', compact('suppliers', 'locations', 'users'));
+        $storeOfficers = User::role('Store-Manager')->get();
+        return view('dopes.create', compact('suppliers', 'locations', 'users', 'storeOfficers'));
     }
 
     public function store(Request $request)
@@ -37,7 +38,12 @@ class DopeController extends Controller
         $request->validate([
             'part_number' => 'required|string',
             'description' => 'nullable|string',
-            'quantity_received' => 'required|integer',
+            'received_quantity' => 'required|integer',
+            'accepted_quantity' => 'required|integer',
+            'binned_quantity' => 'required|integer',
+            'ak_reg' => 'required|string',
+            'remark' => 'nullable|string',
+            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'supplier_id' => 'required|exists:suppliers,id',
             'airway_bill' => 'nullable|string',
@@ -58,7 +64,8 @@ class DopeController extends Controller
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
         $users = User::all();
-        return view('dopes.edit', compact('dope', 'suppliers', 'locations', 'users'));
+        $storeOfficers = User::role('Store-Manager')->get();
+        return view('dopes.edit', compact('dope', 'suppliers', 'locations', 'users', 'storeOfficers'));
     }
 
     public function update(Request $request, Dope $dope)
@@ -66,7 +73,12 @@ class DopeController extends Controller
         $request->validate([
             'part_number' => 'required|string',
             'description' => 'nullable|string',
-            'quantity_received' => 'required|integer',
+            'received_quantity' => 'required|integer',
+            'accepted_quantity' => 'required|integer',
+            'binned_quantity' => 'required|integer',
+            'ak_reg' => 'required|string',
+            'remark' => 'nullable|string',
+            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'supplier_id' => 'required|exists:suppliers,id',
             'airway_bill' => 'nullable|string',
