@@ -15,6 +15,7 @@ class Consumable extends Model
     protected $fillable = [
         'part_number',
         'description',
+        'serial_number',
         'received_quantity',
         'accepted_quantity',
         'binned_quantity',
@@ -25,6 +26,7 @@ class Consumable extends Model
         'due_date',
         'received_by_id',
         'status',
+        'airway_bill',
         'supplier_id',
         'location_id',
         'received_date',

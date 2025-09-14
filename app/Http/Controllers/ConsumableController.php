@@ -40,6 +40,7 @@ class ConsumableController extends Controller
         $request->validate([
             'part_number' => 'required|string',
             'description' => 'nullable|string',
+            'serial_number' => 'required|string',
             'received_quantity' => 'required|integer',
             'accepted_quantity' => 'required|integer',
             'binned_quantity' => 'required|integer',
@@ -50,6 +51,7 @@ class ConsumableController extends Controller
             'due_date' => 'required|date',
             'received_by_id' => 'required|exists:users,id',
             'status' => 'required|string',
+            'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
             'location_id' => 'required|exists:shelf_locations,id',
             'received_date' => 'required|date',
@@ -77,6 +79,7 @@ class ConsumableController extends Controller
         $request->validate([
             'part_number' => 'required|string',
             'description' => 'nullable|string',
+            'serial_number' => 'required|string',
             'received_quantity' => 'required|integer',
             'accepted_quantity' => 'required|integer',
             'binned_quantity' => 'required|integer',
@@ -87,6 +90,7 @@ class ConsumableController extends Controller
             'due_date' => 'required|date',
             'received_by_id' => 'required|exists:users,id',
             'status' => 'required|string',
+            'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
             'location_id' => 'required|exists:shelf_locations,id',
             'received_date' => 'required|date',

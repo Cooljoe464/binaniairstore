@@ -34,6 +34,7 @@ class ConsumableFactory extends Factory
         return [
             'part_number' => $this->faker->ean8(),
             'description' => $this->faker->sentence(),
+            'serial_number' => $this->faker->unique()->ean13(),
             'received_quantity' => $receivedQuantity,
             'accepted_quantity' => $receivedQuantity,
             'binned_quantity' => $receivedQuantity,
@@ -44,6 +45,7 @@ class ConsumableFactory extends Factory
             'due_date' => $this->faker->date(),
             'received_by_id' => User::factory(),
             'status' => $this->faker->randomElement(Status::cases()),
+            'airway_bill' => $this->faker->bothify('AWB-########'),
             'supplier_id' => Supplier::factory(),
             'location_id' => ShelfLocation::factory(),
             'received_date' => $this->faker->date(),

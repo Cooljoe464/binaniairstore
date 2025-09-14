@@ -37,10 +37,10 @@ class SendInventoryAlerts extends Command
     {
         $this->info('Sending inventory alerts...');
 
-        $alertableUsers = User::role(['Admin', 'Store Manager'])->get();
+        $alertableUsers = User::role(['Admin', 'Store-Manager'])->get();
 
         if ($alertableUsers->isEmpty()) {
-            $this->info('No users with Admin or Store Manager roles found. Skipping alerts.');
+            $this->info('No users with Admin or Store-Manager roles found. Skipping alerts.');
             return 0;
         }
 
@@ -71,7 +71,7 @@ class SendInventoryAlerts extends Command
         }
     }
 
-    private function sendLowStockAlertsFor($model, $users, $quantityColumn = 'quantity_received', $threshold = 10)
+    private function sendLowStockAlertsFor($model, $users, $quantityColumn = 'received_quantity', $threshold = 10)
     {
         $items = $model::where($quantityColumn, '< ', $threshold)->get();
         foreach ($items as $item) {

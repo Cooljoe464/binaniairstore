@@ -4,10 +4,10 @@ namespace App\Enums;
 
 enum QuantityStatus: string
 {
+    case NONE = 'none';
     case LOW = 'low';
     case MEDIUM = 'medium';
     case GOOD = 'good';
-    case NONE = 'none';
 
     public static function fromQuantity(?int $quantity): self
     {
@@ -17,19 +17,22 @@ enum QuantityStatus: string
 
         if ($quantity <= self::lowThreshold()) {
             return self::LOW;
-        } elseif ($quantity <= self::mediumThreshold()) {
+        }
+
+        if ($quantity <= self::mediumThreshold()) {
             return self::MEDIUM;
         }
+
         return self::GOOD;
     }
 
     public function getColorClass(): string
     {
         return match ($this) {
+            self::NONE => 'bg-gray-100 text-gray-800',
             self::LOW => 'bg-red-100 text-red-800',
             self::MEDIUM => 'bg-yellow-100 text-yellow-800',
             self::GOOD => 'bg-green-100 text-green-800',
-            self::NONE => 'bg-gray-100 text-gray-800',
         };
     }
 

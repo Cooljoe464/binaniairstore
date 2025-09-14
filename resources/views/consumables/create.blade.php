@@ -16,6 +16,11 @@
                                 <input type="text" name="part_number" id="part_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
                             </div>
 
+                            <div class="mb-4">
+                                <label for="serial_number" class="block text-sm font-medium text-gray-700">Serial Number</label>
+                                <input type="text" name="serial_number" id="serial_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                            </div>
+
                             <div class="mb-4 md:col-span-2">
                                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                                 <textarea name="description" id="description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
@@ -48,6 +53,11 @@
                                         <option value="{{ $status->value }}">{{ $status->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+
+                             <div class="mb-4">
+                                <label for="airway_bill" class="block text-sm font-medium text-gray-700">Airway Bill</label>
+                                <input type="text" name="airway_bill" id="airway_bill" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             </div>
 
                             <div class="mb-4">
