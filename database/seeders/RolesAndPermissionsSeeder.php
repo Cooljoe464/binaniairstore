@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Role; // <--- CORRECTED
 use App\Models\Permission; // <--- CORRECTED
@@ -52,5 +53,17 @@ class RolesAndPermissionsSeeder extends Seeder
         foreach ($storeModules as $module) {
             $technicianRole->givePermissionTo($module . '-list');
         }
+
+
+        $user = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@binaniair.com',
+        ]);
+
+        // Assign a default role to the test user
+        $user->assignRole('Admin');
+
+
+
     }
 }

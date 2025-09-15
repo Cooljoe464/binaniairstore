@@ -20,6 +20,28 @@ class User extends Authenticatable
     use HasFactory;
 
     /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false; // Add this line
+
+    /**
+     * The "type" of the primary key.
+     *
+     * @var string
+     */
+    protected $keyType = 'string'; // Add this line
+
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

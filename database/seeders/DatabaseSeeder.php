@@ -16,13 +16,6 @@ class DatabaseSeeder extends Seeder
         // It's best to run the Role & Permission seeder first
         $this->call(RolesAndPermissionsSeeder::class);
 
-//        $user = User::factory()->create([
-//            'name' => 'Admin User',
-//            'email' => 'admin@example.com',
-//        ]);
-//
-//        // Assign a default role to the test user
-//        $user->assignRole('Admin');
 
         $this->call([
             AircraftSeeder::class,
