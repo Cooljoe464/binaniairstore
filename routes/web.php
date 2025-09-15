@@ -44,3 +44,5 @@ Route::middleware([
     Route::resource('tools', ToolController::class);
     Route::resource('dopes', DopeController::class);
 });
+
+
