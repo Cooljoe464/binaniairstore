@@ -15,15 +15,13 @@ class Dope extends Model
     protected $fillable = [
         'part_number',
         'description',
-        'received_quantity',
-        'accepted_quantity',
-        'binned_quantity',
-        'ak_reg',
+        'serial_number',
+        'quantity',
+        'aircraft_registration',
         'remark',
-        'store_officer_id',
         'status',
-        'supplier_id',
         'airway_bill',
+        'supplier_id',
         'location_id',
         'received_by_id',
         'date',
@@ -47,10 +45,5 @@ class Dope extends Model
     public function receivedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'received_by_id');
-    }
-
-    public function storeOfficer(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'store_officer_id');
     }
 }

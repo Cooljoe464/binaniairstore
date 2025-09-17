@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aircraft;
 use App\Models\Dope;
 use App\Models\Supplier;
 use App\Models\ShelfLocation;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DopeController extends Controller
@@ -28,9 +30,8 @@ class DopeController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $users = User::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('dopes.create', compact('suppliers', 'locations', 'users', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('dopes.create', compact('suppliers', 'locations', 'aircrafts'));
     }
 
     public function store(Request $request)
@@ -38,22 +39,21 @@ class DopeController extends Controller
         $request->validate([
             'part_number' => 'required|string',
             'description' => 'nullable|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'serial_number' => 'nullable|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'supplier_id' => 'required|exists:suppliers,id',
             'airway_bill' => 'nullable|string',
             'location_id' => 'required|exists:shelf_locations,id',
-            'received_by_id' => 'required|exists:users,id',
             'date' => 'required|date',
         ]);
 
         DB::transaction(function () use ($request) {
-            Dope::create($request->all());
+            Dope::create($request->merge([
+                'received_by_id' => Auth::id(),
+            ])->all());
         });
 
         return redirect()->route('dopes.index')->with('success', 'Dope created successfully.');
@@ -63,9 +63,8 @@ class DopeController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $users = User::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('dopes.edit', compact('dope', 'suppliers', 'locations', 'users', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('dopes.edit', compact('dope', 'suppliers', 'locations', 'aircrafts'));
     }
 
     public function update(Request $request, Dope $dope)
@@ -73,22 +72,21 @@ class DopeController extends Controller
         $request->validate([
             'part_number' => 'required|string',
             'description' => 'nullable|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'serial_number' => 'nullable|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'supplier_id' => 'required|exists:suppliers,id',
             'airway_bill' => 'nullable|string',
             'location_id' => 'required|exists:shelf_locations,id',
-            'received_by_id' => 'required|exists:users,id',
             'date' => 'required|date',
         ]);
 
         DB::transaction(function () use ($request, $dope) {
-            $dope->update($request->all());
+            $dope->update($request->merge([
+                'received_by_id' => Auth::id(),
+            ])->all());
         });
 
         return redirect()->route('dopes.index')->with('success', 'Dope updated successfully.');

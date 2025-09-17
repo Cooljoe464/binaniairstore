@@ -9,6 +9,7 @@ use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ConsumableController extends Controller
 {
@@ -28,11 +29,9 @@ class ConsumableController extends Controller
     public function create()
     {
         $aircrafts = Aircraft::all();
-        $users = User::all();
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('consumables.create', compact('aircrafts', 'users', 'suppliers', 'locations', 'storeOfficers'));
+        return view('consumables.create', compact('aircrafts', 'suppliers', 'locations'));
     }
 
     public function store(Request $request)
@@ -41,15 +40,11 @@ class ConsumableController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
-            'aircraft_id' => 'required|exists:aircrafts,id',
+            'aircraft_id' => 'required|exists:aircraft,id',
             'due_date' => 'required|date',
-            'received_by_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -58,7 +53,9 @@ class ConsumableController extends Controller
         ]);
 
         DB::transaction(function () use ($request) {
-            Consumable::create($request->all());
+            Consumable::create($request->merge([
+                'received_by_id' => Auth::id(),
+            ])->all());
         });
 
         return redirect()->route('consumables.index')->with('success', 'Consumable created successfully.');
@@ -67,11 +64,9 @@ class ConsumableController extends Controller
     public function edit(Consumable $consumable)
     {
         $aircrafts = Aircraft::all();
-        $users = User::all();
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('consumables.edit', compact('consumable', 'aircrafts', 'users', 'suppliers', 'locations', 'storeOfficers'));
+        return view('consumables.edit', compact('consumable', 'aircrafts', 'suppliers', 'locations'));
     }
 
     public function update(Request $request, Consumable $consumable)
@@ -80,15 +75,11 @@ class ConsumableController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
-            'aircraft_id' => 'required|exists:aircrafts,id',
+            'aircraft_id' => 'required|exists:aircraft,id',
             'due_date' => 'required|date',
-            'received_by_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -97,7 +88,9 @@ class ConsumableController extends Controller
         ]);
 
         DB::transaction(function () use ($request, $consumable) {
-            $consumable->update($request->all());
+            $consumable->update($request->merge([
+                'received_by_id' => Auth::id(),
+            ])->all());
         });
 
         return redirect()->route('consumables.index')->with('success', 'Consumable updated successfully.');

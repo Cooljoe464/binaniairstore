@@ -17,6 +17,13 @@
                                    required>
                         </div>
 
+                        <div class="mb-4">
+                            <label for="registration_number" class="block text-sm font-medium text-gray-700">Registration Number</label>
+                            <input type="text" name="registration_number" id="registration_number"
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                   required>
+                        </div>
+
                         <div class="flex items-center justify-end mt-4">
                             <a href="{{ route('aircraft.index') }}" class="text-gray-600 hover:text-gray-900 mr-4">Cancel</a>
                             <button type="submit"

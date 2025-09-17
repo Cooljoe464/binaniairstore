@@ -16,12 +16,9 @@ class Tool extends Model
         'part_number',
         'description',
         'serial_number',
-        'received_quantity',
-        'accepted_quantity',
-        'binned_quantity',
-        'ak_reg',
+        'quantity',
+        'aircraft_registration',
         'remark',
-        'store_officer_id',
         'status',
         'calibration_date',
         'due_date',
@@ -51,10 +48,5 @@ class Tool extends Model
     public function location(): BelongsTo
     {
         return $this->belongsTo(ShelfLocation::class, 'location_id');
-    }
-
-    public function storeOfficer(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'store_officer_id');
     }
 }

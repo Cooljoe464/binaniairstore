@@ -17,5 +17,5 @@ class Aircraft extends Model
      */
     protected $table = 'aircraft';
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'registration_number'];
 }

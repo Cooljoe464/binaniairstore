@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aircraft;
 use App\Models\DangerousGood;
 use App\Models\Supplier;
 use App\Models\ShelfLocation;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DangerousGoodController extends Controller
 {
@@ -28,8 +29,8 @@ class DangerousGoodController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('dangerous-goods.create', compact('suppliers', 'locations', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('dangerous-goods.create', compact('suppliers', 'locations', 'aircrafts'));
     }
 
     public function store(Request $request)
@@ -38,12 +39,9 @@ class DangerousGoodController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -53,7 +51,7 @@ class DangerousGoodController extends Controller
         ]);
 
         DB::transaction(function () use ($request) {
-            DangerousGood::create($request->all());
+            DangerousGood::create($request->merge(['received_by_id' => Auth::id()])->all());
         });
 
         return redirect()->route('dangerous-goods.index')->with('success', 'Dangerous Good created successfully.');
@@ -63,8 +61,8 @@ class DangerousGoodController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('dangerous-goods.edit', compact('dangerousGood', 'suppliers', 'locations', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('dangerous-goods.edit', compact('dangerousGood', 'suppliers', 'locations', 'aircrafts'));
     }
 
     public function update(Request $request, DangerousGood $dangerousGood)
@@ -73,12 +71,9 @@ class DangerousGoodController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -88,7 +83,7 @@ class DangerousGoodController extends Controller
         ]);
 
         DB::transaction(function () use ($request, $dangerousGood) {
-            $dangerousGood->update($request->all());
+            $dangerousGood->update($request->merge(['received_by_id' => Auth::id()])->all());
         });
 
         return redirect()->route('dangerous-goods.index')->with('success', 'Dangerous Good updated successfully.');

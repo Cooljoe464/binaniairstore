@@ -28,23 +28,17 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="received_quantity" class="block text-sm font-medium text-gray-700">Received Quantity</label>
-                                <input type="number" name="received_quantity" id="received_quantity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ old('received_quantity', $dangerousGood->received_quantity) }}" required>
+                                <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                                <input type="number" name="quantity" id="quantity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ old('quantity', $dangerousGood->quantity) }}" required>
                             </div>
 
                             <div class="mb-4">
-                                <label for="accepted_quantity" class="block text-sm font-medium text-gray-700">Accepted Quantity</label>
-                                <input type="number" name="accepted_quantity" id="accepted_quantity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ old('accepted_quantity', $dangerousGood->accepted_quantity) }}" required>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="binned_quantity" class="block text-sm font-medium text-gray-700">Binned Quantity</label>
-                                <input type="number" name="binned_quantity" id="binned_quantity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ old('binned_quantity', $dangerousGood->binned_quantity) }}" required>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="ak_reg" class="block text-sm font-medium text-gray-700">AK Reg</label>
-                                <input type="text" name="ak_reg" id="ak_reg" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ old('ak_reg', $dangerousGood->ak_reg) }}" required>
+                                <label for="aircraft_registration" class="block text-sm font-medium text-gray-700">Aircraft Registration</label>
+                                <select name="aircraft_registration" id="aircraft_registration" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                                    @foreach($aircrafts as $aircraft)
+                                        <option value="{{ $aircraft->name }}" {{ old('aircraft_registration', $dangerousGood->aircraft_registration) == $aircraft->name ? 'selected' : '' }}>{{ $aircraft->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <div class="mb-4">
@@ -87,15 +81,6 @@
                             <div class="mb-4">
                                 <label for="due_date" class="block text-sm font-medium text-gray-700">Due Date</label>
                                 <input type="date" name="due_date" id="due_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ old('due_date', $dangerousGood->due_date->format('Y-m-d')) }}" required>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="store_officer_id" class="block text-sm font-medium text-gray-700">Store Officer</label>
-                                <select name="store_officer_id" id="store_officer_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
-                                    @foreach($storeOfficers as $officer)
-                                        <option value="{{ $officer->id }}" {{ old('store_officer_id', $dangerousGood->store_officer_id) == $officer->id ? 'selected' : '' }}>{{ $officer->name }}</option>
-                                    @endforeach
-                                </select>
                             </div>
 
                             <div class="mb-4 md:col-span-2">

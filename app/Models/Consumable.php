@@ -16,12 +16,9 @@ class Consumable extends Model
         'part_number',
         'description',
         'serial_number',
-        'received_quantity',
-        'accepted_quantity',
-        'binned_quantity',
-        'ak_reg',
+        'quantity',
+        'aircraft_registration',
         'remark',
-        'store_officer_id',
         'aircraft_id',
         'due_date',
         'received_by_id',
@@ -56,10 +53,5 @@ class Consumable extends Model
     public function location(): BelongsTo
     {
         return $this->belongsTo(ShelfLocation::class, 'location_id');
-    }
-
-    public function storeOfficer(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'store_officer_id');
     }
 }

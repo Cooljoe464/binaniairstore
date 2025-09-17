@@ -31,11 +31,13 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Create roles
         $adminRole = Role::create(['name' => 'Admin']);
+        $MdRole = Role::create(['name' => 'MD']);
         $storeManagerRole = Role::create(['name' => 'Store-Manager']);
         $technicianRole = Role::create(['name' => 'Technician']);
 
         // Assign all permissions to Admin
         $adminRole->givePermissionTo(Permission::all());
+        $MdRole->givePermissionTo(Permission::all());
 
         // Assign store-related permissions to Store Manager
         $storeModules = [
@@ -57,13 +59,9 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $user = User::factory()->create([
             'name' => 'Admin',
-            'email' => 'admin@binaniair.com',
+            'email' => 'admin@binaniair.com'
         ]);
 
-        // Assign a default role to the test user
         $user->assignRole('Admin');
-
-
-
     }
 }

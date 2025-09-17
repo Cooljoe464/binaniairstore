@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('airway_bill')->nullable();
             $table->foreignUuid('supplier_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('location_id')->constrained('shelf_locations')->cascadeOnDelete();
+            $table->foreignUuid('received_by_id')->constrained('users')->cascadeOnDelete();
             $table->date('received_date');
             $table->date('due_date');
             $table->timestamps();

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aircraft;
 use App\Models\EsdItem;
 use App\Models\Supplier;
 use App\Models\ShelfLocation;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class EsdItemController extends Controller
 {
@@ -28,8 +29,8 @@ class EsdItemController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('esd-items.create', compact('suppliers', 'locations', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('esd-items.create', compact('suppliers', 'locations', 'aircrafts'));
     }
 
     public function store(Request $request)
@@ -38,12 +39,9 @@ class EsdItemController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -52,7 +50,7 @@ class EsdItemController extends Controller
         ]);
 
         DB::transaction(function () use ($request) {
-            EsdItem::create($request->all());
+            EsdItem::create($request->merge(['received_by_id' => Auth::id()])->all());
         });
 
         return redirect()->route('esd-items.index')->with('success', 'ESD Item created successfully.');
@@ -62,8 +60,8 @@ class EsdItemController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('esd-items.edit', compact('esdItem', 'suppliers', 'locations', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('esd-items.edit', compact('esdItem', 'suppliers', 'locations', 'aircrafts'));
     }
 
     public function update(Request $request, EsdItem $esdItem)
@@ -72,12 +70,9 @@ class EsdItemController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -86,7 +81,7 @@ class EsdItemController extends Controller
         ]);
 
         DB::transaction(function () use ($request, $esdItem) {
-            $esdItem->update($request->all());
+            $esdItem->update($request->merge(['received_by_id' => Auth::id()])->all());
         });
 
         return redirect()->route('esd-items.index')->with('success', 'ESD Item updated successfully.');

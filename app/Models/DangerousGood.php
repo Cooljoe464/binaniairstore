@@ -16,12 +16,10 @@ class DangerousGood extends Model
         'part_number',
         'description',
         'serial_number',
-        'received_quantity',
-        'accepted_quantity',
-        'binned_quantity',
-        'ak_reg',
+        'quantity',
+        'aircraft_registration',
         'remark',
-        'store_officer_id',
+        'received_by_id',
         'status',
         'airway_bill',
         'supplier_id',
@@ -46,8 +44,8 @@ class DangerousGood extends Model
         return $this->belongsTo(ShelfLocation::class, 'location_id');
     }
 
-    public function storeOfficer(): BelongsTo
+    public function receivedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'store_officer_id');
+        return $this->belongsTo(User::class, 'received_by_id');
     }
 }

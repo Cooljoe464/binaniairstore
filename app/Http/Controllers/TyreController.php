@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aircraft;
 use App\Models\Tyre;
 use App\Models\Supplier;
 use App\Models\ShelfLocation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class TyreController extends Controller
 {
@@ -28,9 +30,8 @@ class TyreController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $users = User::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('tyres.create', compact('suppliers', 'locations', 'users', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('tyres.create', compact('suppliers', 'locations', 'aircrafts'));
     }
 
     public function store(Request $request)
@@ -39,22 +40,20 @@ class TyreController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
-            'received_by_id' => 'required|exists:users,id',
             'location_id' => 'required|exists:shelf_locations,id',
             'date' => 'required|date',
         ]);
 
         DB::transaction(function () use ($request) {
-            Tyre::create($request->all());
+            Tyre::create($request->merge([
+                'received_by_id' => Auth::id(),
+            ])->all());
         });
 
         return redirect()->route('tyres.index')->with('success', 'Tyre created successfully.');
@@ -64,9 +63,8 @@ class TyreController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $users = User::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('tyres.edit', compact('tyre', 'suppliers', 'locations', 'users', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('tyres.edit', compact('tyre', 'suppliers', 'locations', 'aircrafts'));
     }
 
     public function update(Request $request, Tyre $tyre)
@@ -75,22 +73,20 @@ class TyreController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
-            'received_by_id' => 'required|exists:users,id',
             'location_id' => 'required|exists:shelf_locations,id',
             'date' => 'required|date',
         ]);
 
         DB::transaction(function () use ($request, $tyre) {
-            $tyre->update($request->all());
+            $tyre->update($request->merge([
+                'received_by_id' => Auth::id(),
+            ])->all());
         });
 
         return redirect()->route('tyres.index')->with('success', 'Tyre updated successfully.');

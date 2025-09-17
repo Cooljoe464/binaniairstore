@@ -26,6 +26,7 @@ class AircraftFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->company(),
+            'registration_number' => $this->faker->unique()->regexify('[A-Z0-9]{6}'),
         ];
     }
 }

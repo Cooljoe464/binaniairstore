@@ -3,43 +3,32 @@
 namespace Database\Factories;
 
 use App\Enums\Status;
+use App\Models\Aircraft;
 use App\Models\EsdItem;
 use App\Models\ShelfLocation;
 use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EsdItem>
- */
 class EsdItemFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = EsdItem::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
-        $receivedQuantity = $this->faker->numberBetween(1, 100);
+        do {
+            $partNumber = $this->faker->unique()->ean8();
+            $serialNumber = $this->faker->unique()->ean13();
+        } while (EsdItem::where('part_number', $partNumber)->where('serial_number', $serialNumber)->exists());
 
         return [
-            'part_number' => $this->faker->unique()->ean8(),
+            'part_number' => $partNumber,
             'description' => $this->faker->sentence(),
-            'serial_number' => $this->faker->unique()->ean13(),
-            'received_quantity' => $receivedQuantity,
-            'accepted_quantity' => $receivedQuantity,
-            'binned_quantity' => $receivedQuantity,
-            'ak_reg' => $this->faker->bothify('??-###'),
+            'serial_number' => $serialNumber,
+            'quantity' => $this->faker->numberBetween(1, 100),
+            'aircraft_registration' => Aircraft::inRandomOrder()->first()->registration_number ?? 'N/A',
             'remark' => $this->faker->sentence(),
-            'store_officer_id' => User::inRandomOrder()->first()->id ?? User::factory(),
+            'received_by_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'status' => $this->faker->randomElement(Status::cases()),
             'airway_bill' => $this->faker->bothify('AWB-########'),
             'supplier_id' => Supplier::factory(),

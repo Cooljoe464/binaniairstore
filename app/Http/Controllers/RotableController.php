@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aircraft;
 use App\Models\Rotable;
 use App\Models\Supplier;
 use App\Models\ShelfLocation;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class RotableController extends Controller
 {
@@ -28,22 +30,25 @@ class RotableController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('rotables.create', compact('suppliers', 'locations', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('rotables.create', compact('suppliers', 'locations', 'aircrafts'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'part_number' => 'required|string',
+            'part_number' => [
+                'required',
+                'string',
+                Rule::unique('rotables')->where(function ($query) use ($request) {
+                    return $query->where('serial_number', $request->serial_number);
+                }),
+            ],
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -52,7 +57,9 @@ class RotableController extends Controller
         ]);
 
         DB::transaction(function () use ($request) {
-            Rotable::create($request->all());
+            Rotable::create($request->merge([
+                'received_by_id' => Auth::id(),
+            ])->all());
         });
 
         return redirect()->route('rotables.index')->with('success', 'Rotable created successfully.');
@@ -62,22 +69,25 @@ class RotableController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('rotables.edit', compact('rotable', 'suppliers', 'locations', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('rotables.edit', compact('rotable', 'suppliers', 'locations', 'aircrafts'));
     }
 
     public function update(Request $request, Rotable $rotable)
     {
         $request->validate([
-            'part_number' => 'required|string',
+            'part_number' => [
+                'required',
+                'string',
+                Rule::unique('rotables')->where(function ($query) use ($request) {
+                    return $query->where('serial_number', $request->serial_number);
+                })->ignore($rotable->id),
+            ],
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'airway_bill' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -86,7 +96,9 @@ class RotableController extends Controller
         ]);
 
         DB::transaction(function () use ($request, $rotable) {
-            $rotable->update($request->all());
+            $rotable->update($request->merge([
+                'received_by_id' => Auth::id(),
+            ])->all());
         });
 
         return redirect()->route('rotables.index')->with('success', 'Rotable updated successfully.');

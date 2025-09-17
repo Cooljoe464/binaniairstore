@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AircraftSeeder::class,
             SupplierSeeder::class,
             ShelfLocationSeeder::class,
+            LocationSeeder::class, // Added Location Seeder
             RotableSeeder::class,
             ConsumableSeeder::class,
             EsdItemSeeder::class,
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
             TyreSeeder::class,
             ToolSeeder::class,
             DopeSeeder::class,
+            RequisitionSeeder::class,
         ]);
     }
 }

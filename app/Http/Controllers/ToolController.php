@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aircraft;
 use App\Models\Tool;
 use App\Models\Supplier;
 use App\Models\ShelfLocation;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ToolController extends Controller
@@ -28,9 +30,8 @@ class ToolController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $users = User::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('tools.create', compact('suppliers', 'locations', 'users', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('tools.create', compact('suppliers', 'locations', 'aircrafts'));
     }
 
     public function store(Request $request)
@@ -39,23 +40,21 @@ class ToolController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'calibration_date' => 'required|date',
             'due_date' => 'required|date',
             'supplier_id' => 'required|exists:suppliers,id',
-            'received_by_id' => 'required|exists:users,id',
             'location_id' => 'required|exists:shelf_locations,id',
             'date' => 'required|date',
         ]);
 
         DB::transaction(function () use ($request) {
-            Tool::create($request->all());
+            Tool::create($request->merge([
+                'received_by_id' => Auth::id(),
+            ])->all());
         });
 
         return redirect()->route('tools.index')->with('success', 'Tool created successfully.');
@@ -65,9 +64,8 @@ class ToolController extends Controller
     {
         $suppliers = Supplier::all();
         $locations = ShelfLocation::all();
-        $users = User::all();
-        $storeOfficers = User::role('Store-Manager')->get();
-        return view('tools.edit', compact('tool', 'suppliers', 'locations', 'users', 'storeOfficers'));
+        $aircrafts = Aircraft::all();
+        return view('tools.edit', compact('tool', 'suppliers', 'locations', 'aircrafts'));
     }
 
     public function update(Request $request, Tool $tool)
@@ -76,23 +74,21 @@ class ToolController extends Controller
             'part_number' => 'required|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string',
-            'received_quantity' => 'required|integer',
-            'accepted_quantity' => 'required|integer',
-            'binned_quantity' => 'required|integer',
-            'ak_reg' => 'required|string',
+            'quantity' => 'required|integer',
+            'aircraft_registration' => 'required|string',
             'remark' => 'nullable|string',
-            'store_officer_id' => 'required|exists:users,id',
             'status' => 'required|string',
             'calibration_date' => 'required|date',
             'due_date' => 'required|date',
             'supplier_id' => 'required|exists:suppliers,id',
-            'received_by_id' => 'required|exists:users,id',
             'location_id' => 'required|exists:shelf_locations,id',
             'date' => 'required|date',
         ]);
 
         DB::transaction(function () use ($request, $tool) {
-            $tool->update($request->all());
+            $tool->update($request->merge([
+                'received_by_id' => Auth::id(),
+            ])->all());
         });
 
         return redirect()->route('tools.index')->with('success', 'Tool updated successfully.');

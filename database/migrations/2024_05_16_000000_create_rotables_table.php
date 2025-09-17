@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('quantity_received');
             $table->string('status');
             $table->string('airway_bill')->nullable();
+            $table->foreignUuid('received_by_id')->constrained('users')->cascadeOnDelete();
             $table->foreignUuid('supplier_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('location_id')->constrained('shelf_locations')->cascadeOnDelete();
             $table->date('received_date');

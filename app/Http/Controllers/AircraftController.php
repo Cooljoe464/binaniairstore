@@ -30,6 +30,7 @@ class AircraftController extends Controller
     {
         $request->validate([
             'name' => 'required|string|unique:aircraft,name',
+            'registration_number' => 'required|string|unique:aircraft,registration_number',
         ]);
 
         DB::transaction(function () use ($request) {
@@ -48,6 +49,7 @@ class AircraftController extends Controller
     {
         $request->validate([
             'name' => 'required|string|unique:aircraft,name,' . $aircraft->id,
+            'registration_number' => 'required|string|unique:aircraft,registration_number,' . $aircraft->id,
         ]);
 
         DB::transaction(function () use ($request, $aircraft) {

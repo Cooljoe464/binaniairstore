@@ -14,6 +14,7 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Registration Number</th>
                         <th scope="col" class="relative px-6 py-3">
                             <span class="sr-only">Edit</span>
                         </th>
@@ -23,6 +24,7 @@
                     @foreach ($aircrafts as $aircraft)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $aircraft->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $aircraft->registration_number }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <a href="{{ route('aircraft.edit', $aircraft) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                 <form action="{{ route('aircraft.destroy', $aircraft) }}" method="POST" class="inline-block">
@@ -53,6 +55,9 @@
                                 <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Delete</button>
                             </form>
                         </div>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-600">
+                        <div><strong>Registration Number:</strong> {{ $aircraft->registration_number }}</div>
                     </div>
                 </div>
             @endforeach
