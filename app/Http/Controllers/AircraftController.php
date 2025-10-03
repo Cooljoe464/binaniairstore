@@ -8,14 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class AircraftController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:aircrafts-list', ['only' => ['index']]);
-//        $this->middleware('permission:aircrafts-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:aircrafts-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:aircrafts-delete', ['only' => ['destroy']]);
-    }
-
     public function index()
     {
         return view('aircraft.index');

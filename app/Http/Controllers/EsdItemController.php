@@ -12,14 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class EsdItemController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:esd-items-list', ['only' => ['index']]);
-//        $this->middleware('permission:esd-items-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:esd-items-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:esd-items-delete', ['only' => ['destroy']]);
-    }
-
     public function index()
     {
         return view('esd-items.index');

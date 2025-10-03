@@ -24,8 +24,8 @@
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $role->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="{{ route('roles.edit', $role) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                <form action="{{ route('roles.destroy', $role) }}" method="POST" class="inline-block">
+                                <a href="{{ route('roles.edit', $role->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Delete</button>
@@ -46,8 +46,8 @@
                     <div class="flex justify-between items-center">
                         <span class="font-bold text-lg">{{ $role->name }}</span>
                         <div class="text-right">
-                            <a href="{{ route('roles.edit', $role) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                            <form action="{{ route('roles.destroy', $role) }}" method="POST" class="inline-block">
+                            <a href="{{ route('roles.edit', $role->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                            <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Delete</button>

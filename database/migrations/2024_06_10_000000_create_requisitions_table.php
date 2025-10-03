@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('requested_by');
             $table->foreignUuid('approved_by_id')->nullable()->constrained('users');
             $table->foreignUuid('disbursed_by_id')->nullable()->constrained('users');
-
+            $table->timestamp('disbursed_at')->nullable();
             $table->string('status')->default(RequisitionStatus::PENDING_APPROVAL->value);
             $table->timestamps();
         });

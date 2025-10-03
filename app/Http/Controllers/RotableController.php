@@ -13,14 +13,6 @@ use Illuminate\Validation\Rule;
 
 class RotableController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:rotables-list', ['only' => ['index']]);
-//        $this->middleware('permission:rotables-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:rotables-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:rotables-delete', ['only' => ['destroy']]);
-    }
-
     public function index()
     {
         return view('rotables.index');

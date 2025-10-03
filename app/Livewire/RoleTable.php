@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 class RoleTable extends Component
 {
@@ -19,7 +19,7 @@ class RoleTable extends Component
 
     private function getRolesQuery()
     {
-        return Role::with('permissions')
+        return Role::query()
             ->where('name', 'like', '%' . $this->search . '%')
             ->orderBy('roles.created_at', 'desc');
     }

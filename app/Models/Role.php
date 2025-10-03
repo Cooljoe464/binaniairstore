@@ -22,7 +22,7 @@ class Role extends SpatieRole
 
         static::creating(function ($model) {
             if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = Str::uuid()->toString();
+                $model->{$model->getKeyName()} = Str::uuid7()->toString();
             }
         });
     }
@@ -37,8 +37,6 @@ class Role extends SpatieRole
         return false;
     }
 
-    public function getKeyType(): string
-    {
-        return 'string';
-    }
+    protected $keyType = 'string';
+
 }

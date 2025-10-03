@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class Permission extends SpatiePermission
 {
-//    use HasUuids;
+    use HasUuids;
 
     protected $primaryKey = 'id';
 
@@ -23,7 +23,7 @@ class Permission extends SpatiePermission
 
         static::creating(function ($model) {
             if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = Str::uuid()->toString();
+                $model->{$model->getKeyName()} = Str::uuid7()->toString();
             }
         });
     }

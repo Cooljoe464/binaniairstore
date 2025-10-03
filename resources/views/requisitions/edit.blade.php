@@ -42,7 +42,7 @@
 
                             <div>
                                 <label for="part_id" class="block text-sm font-medium text-gray-700">Part Number</label>
-                                <select name="part_id" id="part_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                                <select @if(auth()->user()->hasRole('Admin')) name="part_id" @else readonly name="part_id"  @endif  id="part_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
                                     <option value="">Select a part</option>
                                     @foreach($parts as $part)
                                         <option value="{{ $part->id }}"
@@ -57,7 +57,7 @@
 
                             <div>
                                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                                <input type="text" name="description" id="description" value="{{ $requisition->part->description ?? '' }}" readonly class="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
+                                <input type="text" id="description" value="{{ $requisition->part->description ?? '' }}" readonly class="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
                             </div>
 
                             <div>
@@ -82,12 +82,12 @@
 
                             <div>
                                 <label for="collectors_name" class="block text-sm font-medium text-gray-700">Collector's Name</label>
-                                <input type="text" name="collectors_name" id="collectors_name" value="{{ $requisition->collectors_name }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                                <input type="text"  name="collectors_name" id="collectors_name" value="{{ $requisition->collectors_name }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
                             </div>
 
                             <div>
                                 <label for="location_to_id" class="block text-sm font-medium text-gray-700">Location To</label>
-                                <select name="location_to_id" id="location_to_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                                <select @if(auth()->user()->hasRole('Admin')) name="location_to_id" @else readonly @endif  id="location_to_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
                                     <option value="">Select a location</option>
                                     @foreach($locations as $location)
                                         <option value="{{ $location->id }}" {{ $requisition->location_to_id == $location->id ? 'selected' : '' }}>{{ $location->name }}</option>
@@ -97,7 +97,7 @@
 
                             <div>
                                 <label for="aircraft_registration" class="block text-sm font-medium text-gray-700">Aircraft</label>
-                                <select name="aircraft_registration" id="aircraft_registration" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                                <select @if(auth()->user()->hasRole('Admin')) name="aircraft_registration" @else readonly @endif  id="aircraft_registration" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
                                     <option value="">Select an aircraft</option>
                                     @foreach($aircrafts as $aircraft)
                                         <option value="{{ $aircraft->registration_number }}" {{ $requisition->aircraft_registration == $aircraft->registration_number ? 'selected' : '' }}>{{ $aircraft->registration_number }}</option>
@@ -107,7 +107,7 @@
 
                             <div class="md:col-span-2">
                                 <label for="additional_notes" class="block text-sm font-medium text-gray-700">Additional Notes</label>
-                                <textarea name="additional_notes" id="additional_notes" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">{{ $requisition->additional_notes }}</textarea>
+                                <textarea @if(auth()->user()->hasRole('Admin')) name="additional_notes" @else readonly @endif  id="additional_notes" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">{{ $requisition->additional_notes }}</textarea>
                             </div>
                         </div>
 

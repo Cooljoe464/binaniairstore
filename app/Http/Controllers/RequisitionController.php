@@ -20,19 +20,10 @@ use App\Notifications\RequisitionApproved;
 use App\Notifications\RequisitionDisbursed;
 use App\Notifications\RequisitionRejected;
 use App\Notifications\NewRequisition;
+use Illuminate\Support\Facades\Log;
 
 class RequisitionController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:requisitions-list', ['only' => ['index']]);
-//        $this->middleware('permission:requisitions-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:requisitions-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:requisitions-delete', ['only' => ['destroy']]);
-//        $this->middleware('permission:requisitions-approve', ['only' => ['approve']]);
-//        $this->middleware('permission:requisitions-reject', ['only' => ['reject']]);
-    }
-
     public function index()
     {
         return view('requisitions.index');
@@ -100,17 +91,24 @@ class RequisitionController extends Controller
             'status' => RequisitionStatus::PENDING_APPROVAL,
         ]);
 
-        $mds = User::role('MD')->get();
-//        foreach ($mds as $md) {
-//            $md->notify(new NewRequisition($requisition));
-//        }
+        try {
+            $mds = User::role('MD')->get();
+            foreach ($mds as $md) {
+                $md->notify(new NewRequisition($requisition));
+            }
+            session()->flash('notification_success', 'Notification sent successfully.');
+        } catch (\Exception $e) {
+            Log::error('Notification sending failed: ' . $e->getMessage());
+            session()->flash('notification_error', 'Failed to send notification.');
+        }
 
         return redirect()->route('requisitions.index')->with('success', 'Requisition created successfully.');
     }
 
     public function show(Requisition $requisition)
     {
-        return view('requisitions.show', compact('requisition'));
+        $users = User::role(['Store-Manager', 'Technician'])->get();
+        return view('requisitions.show', compact('requisition', 'users'));
     }
 
     public function edit(Requisition $requisition)
@@ -158,7 +156,26 @@ class RequisitionController extends Controller
         $requisitionData['stock_balance'] = $stock_balance;
         $requisitionData['new_stock_balance'] = $new_stock_balance;
 
+        $isQuantityChanged = (int)$requisition->quantity_required !== (int)$request->quantity_required || (int)$requisition->quantity_issued !== (int)$request->quantity_issued;
+
+        if ($isQuantityChanged) {
+            $requisitionData['status'] = RequisitionStatus::PENDING_APPROVAL;
+        }
+
         $requisition->update($requisitionData);
+
+        if ($isQuantityChanged) {
+            try {
+                $mds = User::role('MD')->get();
+                foreach ($mds as $md) {
+                    $md->notify(new NewRequisition($requisition));
+                }
+                session()->flash('notification_success', 'Notification sent successfully.');
+            } catch (\Exception $e) {
+                Log::error('Notification sending failed: ' . $e->getMessage());
+                session()->flash('notification_error', 'Failed to send notification.');
+            }
+        }
 
         return redirect()->route('requisitions.index')->with('success', 'Requisition updated successfully.');
     }
@@ -194,7 +211,14 @@ class RequisitionController extends Controller
                 }
             });
 
-            $requisition->requestedBy->notify(new RequisitionApproved($requisition));
+            try {
+                $requisition->issuedBy->notify(new RequisitionApproved($requisition));
+                session()->flash('notification_success', 'Approval notification sent successfully.');
+            } catch (\Exception $e) {
+                Log::error('Notification sending failed: ' . $e->getMessage());
+                session()->flash('notification_error', 'Failed to send approval notification.');
+            }
+
             return redirect()->route('requisitions.show', $requisition)->with('success', 'Requisition approved and stock updated successfully.');
 
         } catch (\Exception $e) {
@@ -206,8 +230,37 @@ class RequisitionController extends Controller
     {
         $requisition->update(['status' => RequisitionStatus::REJECTED]);
 
-        $requisition->requestedBy->notify(new RequisitionRejected($requisition));
+        try {
+            $requisition->requestedBy->notify(new RequisitionRejected($requisition));
+            session()->flash('notification_success', 'Rejection notification sent successfully.');
+        } catch (\Exception $e) {
+            Log::error('Notification sending failed: ' . $e->getMessage());
+            session()->flash('notification_error', 'Failed to send rejection notification.');
+        }
 
         return redirect()->route('requisitions.show', $requisition)->with('success', 'Requisition rejected.');
+    }
+
+    public function disburse(Request $request, Requisition $requisition)
+    {
+        $request->validate([
+            'disbursed_by_id' => 'required|exists:users,id',
+        ]);
+
+        $requisition->update([
+            'disbursed_by_id' => $request->disbursed_by_id,
+            'disbursed_at' => now(),
+            'status' => RequisitionStatus::DISBURSED,
+        ]);
+
+        try {
+            $requisition->requestedBy->notify(new RequisitionDisbursed($requisition));
+            session()->flash('notification_success', 'Disbursement notification sent successfully.');
+        } catch (\Exception $e) {
+            Log::error('Notification sending failed: ' . $e->getMessage());
+            session()->flash('notification_error', 'Failed to send disbursement notification.');
+        }
+
+        return redirect()->route('requisitions.show', $requisition)->with('success', 'Requisition disbursed successfully.');
     }
 }

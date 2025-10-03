@@ -13,14 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class ToolController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:tools-list', ['only' => ['index']]);
-//        $this->middleware('permission:tools-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:tools-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:tools-delete', ['only' => ['destroy']]);
-    }
-
     public function index()
     {
         return view('tools.index');

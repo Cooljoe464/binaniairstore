@@ -8,14 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class SupplierController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:suppliers-list', ['only' => ['index']]);
-//        $this->middleware('permission:suppliers-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:suppliers-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:suppliers-delete', ['only' => ['destroy']]);
-    }
-
     public function index()
     {
         return view('suppliers.index');

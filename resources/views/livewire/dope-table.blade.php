@@ -3,7 +3,9 @@
         <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search dopes..." class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full sm:w-1/3">
         <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
             <button wire:click="export" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto">Export to CSV</button>
-            <a href="{{ route('dopes.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto text-center">Create Dope</a>
+            @can('dopes-create')
+                <a href="{{ route('dopes.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto text-center">Create Dope</a>
+            @endcan
         </div>
     </div>
 
@@ -70,12 +72,16 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $dope->location->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $dope->date->format('d-m-Y') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="{{ route('dopes.edit', $dope) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                <form action="{{ route('dopes.destroy', $dope) }}" method="POST" class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Delete</button>
-                                </form>
+                                @can('dopes-edit')
+                                    <a href="{{ route('dopes.edit', $dope) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                @endcan
+                                @can('dopes-delete')
+                                    <form action="{{ route('dopes.destroy', $dope) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Delete</button>
+                                    </form>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach
@@ -92,12 +98,16 @@
                     <div class="flex justify-between items-center">
                         <span class="font-bold text-lg">{{ $dope->part_number }}</span>
                         <div class="text-right">
-                            <a href="{{ route('dopes.edit', $dope) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                            <form action="{{ route('dopes.destroy', $dope) }}" method="POST" class="inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Delete</button>
-                            </form>
+                            @can('dopes-edit')
+                                <a href="{{ route('dopes.edit', $dope) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                            @endcan
+                            @can('dopes-delete')
+                                <form action="{{ route('dopes.destroy', $dope) }}" method="POST" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Delete</button>
+                                </form>
+                            @endcan
                         </div>
                     </div>
                     <div class="mt-2 text-sm text-gray-600">

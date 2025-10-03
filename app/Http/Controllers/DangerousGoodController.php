@@ -12,14 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DangerousGoodController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:dangerous-goods-list', ['only' => ['index']]);
-//        $this->middleware('permission:dangerous-goods-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:dangerous-goods-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:dangerous-goods-delete', ['only' => ['destroy']]);
-    }
-
     public function index()
     {
         return view('dangerous-goods.index');

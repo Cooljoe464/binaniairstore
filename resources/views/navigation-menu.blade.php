@@ -56,27 +56,35 @@
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         {{ __('Store Management') }}
                                     </div>
-                                    <x-dropdown-link href="{{ route('aircraft.index') }}"
-                                                     :active="request()->routeIs('aircraft.index')">
-                                        {{ __('Aircraft Management') }}
-                                    </x-dropdown-link>
-                                    <x-dropdown-link href="{{ route('suppliers.index') }}"
-                                                     :active="request()->routeIs('suppliers.index')">
-                                        {{ __('Supplier Management') }}
-                                    </x-dropdown-link>
-                                    <x-dropdown-link href="{{ route('shelf-locations.index') }}"
-                                                     :active="request()->routeIs('shelf-locations.index')">
-                                        {{ __('Shelf Location Management') }}
-                                    </x-dropdown-link>
-                                    <x-dropdown-link href="{{ route('shelves.index') }}"
-                                                     :active="request()->routeIs('shelves.index')">
-                                        {{ __('Shelf Management') }}
-                                    </x-dropdown-link>
+                                    @can('aircrafts-list')
+                                        <x-dropdown-link href="{{ route('aircraft.index') }}"
+                                                         :active="request()->routeIs('aircraft.index')">
+                                            {{ __('Aircraft Management') }}
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('suppliers-list')
+                                        <x-dropdown-link href="{{ route('suppliers.index') }}"
+                                                         :active="request()->routeIs('suppliers.index')">
+                                            {{ __('Supplier Management') }}
+                                        </x-dropdown-link>
+                                    @endcan
                                     @can('shelf-locations-list')
-                                    <x-dropdown-link href="{{ route('locations.index') }}"
-                                                     :active="request()->routeIs('locations.index')">
-                                        {{ __('Locations') }}
-                                    </x-dropdown-link>
+                                        <x-dropdown-link href="{{ route('shelf-locations.index') }}"
+                                                         :active="request()->routeIs('shelf-locations.index')">
+                                            {{ __('Shelf Location Management') }}
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('shelves-list')
+                                        <x-dropdown-link href="{{ route('shelves.index') }}"
+                                                         :active="request()->routeIs('shelves.index')">
+                                            {{ __('Shelf Management') }}
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('locations-list')
+                                        <x-dropdown-link href="{{ route('locations.index') }}"
+                                                         :active="request()->routeIs('locations.index')">
+                                            {{ __('Locations') }}
+                                        </x-dropdown-link>
                                     @endcan
                                 </x-slot>
                             </x-dropdown>
@@ -92,7 +100,7 @@
                                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
                                         Stores
                                         <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                             viewBox="0_0_24_24" stroke-width="1.5" stroke="currentColor">
+                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                   d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
                                         </svg>
@@ -104,47 +112,68 @@
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         {{ __('Bonded Stores') }}
                                     </div>
-                                    <x-dropdown-link href="{{ route('rotables.index') }}"
-                                                     :active="request()->routeIs('rotables.index')">
-                                        {{ __('Rotables') }}
-                                    </x-dropdown-link>
-                                    <x-dropdown-link href="{{ route('consumables.index') }}"
-                                                     :active="request()->routeIs('consumables.index')">
-                                        {{ __('Consumables') }}
-                                    </x-dropdown-link>
-                                    <x-dropdown-link href="{{ route('esd-items.index') }}"
-                                                     :active="request()->routeIs('esd-items.index')">
-                                        {{ __('ESD Items') }}
-                                    </x-dropdown-link>
+                                    @can('rotables-list')
+                                        <x-dropdown-link href="{{ route('rotables.index') }}"
+                                                         :active="request()->routeIs('rotables.index')">
+                                            {{ __('Rotables') }}
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('consumables-list')
+                                        <x-dropdown-link href="{{ route('consumables.index') }}"
+                                                         :active="request()->routeIs('consumables.index')">
+                                            {{ __('Consumables') }}
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('esd-items-list')
+                                        <x-dropdown-link href="{{ route('esd-items.index') }}"
+                                                         :active="request()->routeIs('esd-items.index')">
+                                            {{ __('ESD Items') }}
+                                        </x-dropdown-link>
+                                    @endcan
                                     <div class="border-t border-gray-200"></div>
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         {{ __('Other Stores') }}
                                     </div>
-                                    <x-dropdown-link href="{{ route('dangerous-goods.index') }}"
-                                                     :active="request()->routeIs('dangerous-goods.index')">
-                                        {{ __('Dangerous Goods Store') }}
-                                    </x-dropdown-link>
-                                    <x-dropdown-link href="{{ route('tyres.index') }}"
-                                                     :active="request()->routeIs('tyres.index')">
-                                        {{ __('Tyre Store') }}
-                                    </x-dropdown-link>
-                                    <x-dropdown-link href="{{ route('tools.index') }}"
-                                                     :active="request()->routeIs('tools.index')">
-                                        {{ __("Tool's Store") }}
-                                    </x-dropdown-link>
-                                    <x-dropdown-link href="{{ route('dopes.index') }}"
-                                                     :active="request()->routeIs('dopes.index')">
-                                        {{ __('Dope Store') }}
-                                    </x-dropdown-link>
+                                    @can('dangerous-goods-list')
+                                        <x-dropdown-link href="{{ route('dangerous-goods.index') }}"
+                                                         :active="request()->routeIs('dangerous-goods.index')">
+                                            {{ __('Dangerous Goods Store') }}
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('tyres-list')
+                                        <x-dropdown-link href="{{ route('tyres.index') }}"
+                                                         :active="request()->routeIs('tyres.index')">
+                                            {{ __('Tyre Store') }}
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('tools-list')
+                                        <x-dropdown-link href="{{ route('tools.index') }}"
+                                                         :active="request()->routeIs('tools.index')">
+                                            {{ __("Tool's Store") }}
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('dopes-list')
+                                        <x-dropdown-link href="{{ route('dopes.index') }}"
+                                                         :active="request()->routeIs('dopes.index')">
+                                            {{ __('Dope Store') }}
+                                        </x-dropdown-link>
+                                    @endcan
                                 </x-slot>
                             </x-dropdown>
                         </div>
                     @endif
-{{--                    @can('requisitions-list')--}}
-                         <x-nav-link href="{{ route('requisitions.index') }}" :active="request()->routeIs('requisitions.index')">
+                    @can('requisitions-list')
+                        <x-nav-link href="{{ route('requisitions.index') }}"
+                                    :active="request()->routeIs('requisitions.index')">
                             {{ __('General Requisitions') }}
                         </x-nav-link>
-{{--                    @endcan--}}
+                    @endcan
+                    @can('goods-received-notes-list')
+                        <x-nav-link href="{{ route('goods-received-notes.index') }}"
+                                    :active="request()->routeIs('goods-received-notes.index')">
+                            {{ __('General Goods Received Note') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -305,27 +334,35 @@
                                 {{ __('Permission Management') }}
                             </x-responsive-nav-link>
                         @endif
-                        <x-responsive-nav-link href="{{ route('aircraft.index') }}"
-                                               :active="request()->routeIs('aircraft.index')">
-                            {{ __('Aircraft Management') }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link href="{{ route('suppliers.index') }}"
-                                               :active="request()->routeIs('suppliers.index')">
-                            {{ __('Supplier Management') }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link href="{{ route('shelf-locations.index') }}"
-                                               :active="request()->routeIs('shelf-locations.index')">
-                            {{ __('Shelf Location Management') }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link href="{{ route('shelves.index') }}"
-                                               :active="request()->routeIs('shelves.index')">
-                            {{ __('Shelf Management') }}
-                        </x-responsive-nav-link>
+                        @can('aircrafts-list')
+                            <x-responsive-nav-link href="{{ route('aircraft.index') }}"
+                                                   :active="request()->routeIs('aircraft.index')">
+                                {{ __('Aircraft Management') }}
+                            </x-responsive-nav-link>
+                        @endcan
+                        @can('suppliers-list')
+                            <x-responsive-nav-link href="{{ route('suppliers.index') }}"
+                                                   :active="request()->routeIs('suppliers.index')">
+                                {{ __('Supplier Management') }}
+                            </x-responsive-nav-link>
+                        @endcan
                         @can('shelf-locations-list')
-                        <x-responsive-nav-link href="{{ route('locations.index') }}"
-                                               :active="request()->routeIs('locations.index')">
-                            {{ __('Locations') }}
-                        </x-responsive-nav-link>
+                            <x-responsive-nav-link href="{{ route('shelf-locations.index') }}"
+                                                   :active="request()->routeIs('shelf-locations.index')">
+                                {{ __('Shelf Location Management') }}
+                            </x-responsive-nav-link>
+                        @endcan
+                        @can('shelves-list')
+                            <x-responsive-nav-link href="{{ route('shelves.index') }}"
+                                                   :active="request()->routeIs('shelves.index')">
+                                {{ __('Shelf Management') }}
+                            </x-responsive-nav-link>
+                        @endcan
+                        @can('locations-list')
+                            <x-responsive-nav-link href="{{ route('locations.index') }}"
+                                                   :active="request()->routeIs('locations.index')">
+                                {{ __('Locations') }}
+                            </x-responsive-nav-link>
                         @endcan
                     </div>
                 </div>
@@ -338,37 +375,61 @@
                         <div class="font-medium text-base text-gray-800">Stores</div>
                     </div>
                     <div class="mt-3 space-y-1">
-                        <x-responsive-nav-link href="{{ route('rotables.index') }}"
-                                               :active="request()->routeIs('rotables.index')">
-                            {{ __('Rotables') }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link href="{{ route('consumables.index') }}"
-                                               :active="request()->routeIs('consumables.index')">
-                            {{ __('Consumables') }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link href="{{ route('esd-items.index') }}"
-                                               :active="request()->routeIs('esd-items.index')">
-                            {{ __('ESD Items') }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link href="{{ route('dangerous-goods.index') }}"
-                                               :active="request()->routeIs('dangerous-goods.index')">
-                            {{ __('Dangerous Goods Store') }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link href="{{ route('tyres.index') }}" :active="request()->routeIs('tyres.index')">
-                            {{ __('Tyre Store') }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link href="{{ route('tools.index') }}" :active="request()->routeIs('tools.index')">
-                            {{ __("Tool's Store") }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link href="{{ route('dopes.index') }}" :active="request()->routeIs('dopes.index')">
-                            {{ __('Dope Store') }}
-                        </x-responsive-nav-link>
+                        @can('rotables-list')
+                            <x-responsive-nav-link href="{{ route('rotables.index') }}"
+                                                   :active="request()->routeIs('rotables.index')">
+                                {{ __('Rotables') }}
+                            </x-responsive-nav-link>
+                        @endcan
+                        @can('consumables-list')
+                            <x-responsive-nav-link href="{{ route('consumables.index') }}"
+                                                   :active="request()->routeIs('consumables.index')">
+                                {{ __('Consumables') }}
+                            </x-responsive-nav-link>
+                        @endcan
+                        @can('esd-items-list')
+                            <x-responsive-nav-link href="{{ route('esd-items.index') }}"
+                                                   :active="request()->routeIs('esd-items.index')">
+                                {{ __('ESD Items') }}
+                            </x-responsive-nav-link>
+                        @endcan
+                        @can('dangerous-goods-list')
+                            <x-responsive-nav-link href="{{ route('dangerous-goods.index') }}"
+                                                   :active="request()->routeIs('dangerous-goods.index')">
+                                {{ __('Dangerous Goods Store') }}
+                            </x-responsive-nav-link>
+                        @endcan
+                        @can('tyres-list')
+                            <x-responsive-nav-link href="{{ route('tyres.index') }}"
+                                                   :active="request()->routeIs('tyres.index')">
+                                {{ __('Tyre Store') }}
+                            </x-responsive-nav-link>
+                        @endcan
+                        @can('tools-list')
+                            <x-responsive-nav-link href="{{ route('tools.index') }}"
+                                                   :active="request()->routeIs('tools.index')">
+                                {{ __("Tool's Store") }}
+                            </x-responsive-nav-link>
+                        @endcan
+                        @can('dopes-list')
+                            <x-responsive-nav-link href="{{ route('dopes.index') }}"
+                                                   :active="request()->routeIs('dopes.index')">
+                                {{ __('Dope Store') }}
+                            </x-responsive-nav-link>
+                        @endcan
                     </div>
                 </div>
             @endif
             @can('requisitions-list')
-                <x-responsive-nav-link href="{{ route('requisitions.index') }}" :active="request()->routeIs('requisitions.index')">
+                <x-responsive-nav-link href="{{ route('requisitions.index') }}"
+                                       :active="request()->routeIs('requisitions.index')">
                     {{ __('General Requisitions') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('goods-received-notes-list')
+                <x-responsive-nav-link href="{{ route('goods-received-notes.index') }}"
+                                       :active="request()->routeIs('goods-received-notes.index')">
+                    {{ __('General Goods Received Note') }}
                 </x-responsive-nav-link>
             @endcan
         </div>

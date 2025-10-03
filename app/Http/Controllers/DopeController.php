@@ -13,14 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class DopeController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:dopes-list', ['only' => ['index']]);
-//        $this->middleware('permission:dopes-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:dopes-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:dopes-delete', ['only' => ['destroy']]);
-    }
-
     public function index()
     {
         return view('dopes.index');

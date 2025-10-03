@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             TyreSeeder::class,
             ToolSeeder::class,
             DopeSeeder::class,
-            RequisitionSeeder::class,
+//            RequisitionSeeder::class,
         ]);
     }
 }

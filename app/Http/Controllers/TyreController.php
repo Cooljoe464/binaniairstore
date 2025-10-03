@@ -13,14 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class TyreController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:tyres-list', ['only' => ['index']]);
-//        $this->middleware('permission:tyres-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:tyres-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:tyres-delete', ['only' => ['destroy']]);
-    }
-
     public function index()
     {
         return view('tyres.index');

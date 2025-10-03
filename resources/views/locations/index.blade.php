@@ -13,7 +13,7 @@
                         <h1 class="text-2xl font-bold text-gray-900">
                             Location List
                         </h1>
-                        @can('shelf-locations-create')
+                        @can('locations-create')
                             <a href="{{ route('locations.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 Create Location
                             </a>
@@ -32,10 +32,10 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $location->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @can('shelf-locations-edit')
+                                        @can('locations-edit')
                                             <a href="{{ route('locations.edit', $location) }}" class="text-yellow-600 hover:text-yellow-900">Edit</a>
                                         @endcan
-                                        @can('shelf-locations-delete')
+                                        @can('locations-delete')
                                             <form action="{{ route('locations.destroy', $location) }}" method="POST" class="inline ml-2">
                                                 @csrf
                                                 @method('DELETE')

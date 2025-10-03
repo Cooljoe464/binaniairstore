@@ -28,12 +28,14 @@ class Requisition extends Model
         'requested_by',
         'approved_by_id',
         'disbursed_by_id',
+        'disbursed_at',
         'issued_by_id',
         'status',
     ];
 
     protected $casts = [
         'status' => RequisitionStatus::class,
+        'disbursed_at' => 'datetime',
     ];
 
     public function approvedBy()

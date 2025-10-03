@@ -7,14 +7,6 @@ use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:shelf-locations-list', ['only' => ['index']]);
-//        $this->middleware('permission:shelf-locations-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:shelf-locations-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:shelf-locations-delete', ['only' => ['destroy']]);
-    }
-
     /**
      * Display a listing of the resource.
      */

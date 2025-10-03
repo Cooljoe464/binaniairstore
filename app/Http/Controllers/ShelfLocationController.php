@@ -8,14 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class ShelfLocationController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:shelf-locations-list', ['only' => ['index']]);
-//        $this->middleware('permission:shelf-locations-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:shelf-locations-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:shelf-locations-delete', ['only' => ['destroy']]);
-    }
-
     public function index()
     {
         return view('shelf-locations.index');

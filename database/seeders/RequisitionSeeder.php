@@ -28,8 +28,8 @@ class RequisitionSeeder extends Seeder
         // Combine parts from different stores
         $parts = Rotable::all()->concat(Consumable::all());
 
-        if ($technicians->isEmpty() || $parts->isEmpty() || $locations->isEmpty()) {
-            $this->command->info('Cannot run RequisitionSeeder: Missing necessary data (technicians, parts, or locations).');
+        if ($technicians->isEmpty() || $parts->isEmpty() || $locations->isEmpty() || $aircrafts->isEmpty()) {
+            $this->command->info('Cannot run RequisitionSeeder: Missing necessary data (technicians, parts, locations, or aircrafts).');
             return;
         }
 
@@ -38,21 +38,21 @@ class RequisitionSeeder extends Seeder
             $requester = $technicians->random();
             $status = RequisitionStatus::cases()[array_rand(RequisitionStatus::cases())];
 
-            $approved_by_id = null;
-            $disbursed_by_id = null;
+            $approver = null;
+            $disburser = null;
 
             if (in_array($status, [RequisitionStatus::APPROVED, RequisitionStatus::DISBURSED, RequisitionStatus::REJECTED])) {
-                $approved_by_id = $mds->isNotEmpty() ? $mds->random()->id : null;
+                $approver = $mds->isNotEmpty() ? $mds->random() : null;
             }
             if ($status === RequisitionStatus::DISBURSED) {
-                $disbursed_by_id = $storeKeepers->isNotEmpty() ? $storeKeepers->random()->id : null;
+                $disburser = $storeKeepers->isNotEmpty() ? $storeKeepers->random() : null;
             }
 
             Requisition::create([
                 'requisition_no' => 'BGAS-SR-' . str_pad($i, 4, '0', STR_PAD_LEFT),
                 'part_id' => $part->id,
                 'part_type' => get_class($part),
-                'aircraft_id' => $aircrafts->isNotEmpty() ? $aircrafts->random()->id : null,
+                'aircraft_registration' => $aircrafts->random()->registration_number,
                 'serial_number' => ($part instanceof Rotable) ? Str::random(10) : null,
                 'quantity_required' => rand(1, 5),
                 'quantity_issued' => ($status === RequisitionStatus::DISBURSED) ? rand(1, 5) : 0,
@@ -60,10 +60,10 @@ class RequisitionSeeder extends Seeder
                 'collectors_name' => $requester->name,
                 'additional_notes' => 'This is a seeded requisition.',
                 'location_to_id' => $locations->random()->id,
-                'requested_by_id' => $requester->id,
-                'approved_by_id' => $approved_by_id,
-                'disbursed_by_id' => $disbursed_by_id,
-                'issued_by_id' => $disbursed_by_id, // Assuming issued by is the same as disbursed by for seeded data
+                'requested_by' => $requester->name,
+                'approved_by_id' => $approver ? $approver->id : null,
+                'disbursed_by_id' => $disburser ? $disburser->id : null,
+                'issued_by_id' => $disburser ? $disburser->id : null, // Assuming issued by is the same as disbursed by for seeded data
                 'status' => $status,
             ]);
         }

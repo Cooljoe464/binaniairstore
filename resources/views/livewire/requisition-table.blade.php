@@ -1,8 +1,8 @@
 <div>
     <div class="flex justify-between mb-4">
-        <input type="text" wire:model.debounce.300ms="search" placeholder="Search requisitions..."
+        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search requisitions..."
                class="w-1/3 px-3 py-2 border border-gray-300 rounded-md">
-        <select wire:model="status" class="w-1/4 px-3 py-2 border border-gray-300 rounded-md">
+        <select wire:model.live="status" class="w-1/4 px-3 py-2 border border-gray-300 rounded-md">
             <option value="">All Statuses</option>
             <option value="Pending Approval">Pending Approval</option>
             <option value="Approved">Approved</option>

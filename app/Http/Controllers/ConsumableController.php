@@ -13,14 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ConsumableController extends Controller
 {
-    public function __construct()
-    {
-//        $this->middleware('permission:consumables-list', ['only' => ['index']]);
-//        $this->middleware('permission:consumables-create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:consumables-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:consumables-delete', ['only' => ['destroy']]);
-    }
-
     public function index()
     {
         return view('consumables.index');
